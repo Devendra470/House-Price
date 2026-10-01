@@ -1,0 +1,269 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>House Price Prediction — Project Report</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    background: #ffffff;
+    color: #1f2328;
+    padding: 32px 16px 48px;
+  }
+  .page { max-width: 760px; margin: 0 auto; }
+
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  h2 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; color: #1f2328; border-left: 3px solid #3b82d4; padding-left: 10px; }
+  h3 { font-size: 13px; font-weight: 600; margin: 14px 0 6px; color: #3b82d4; }
+  p  { margin-bottom: 10px; color: #1f2328; }
+
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 24px; }
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 24px 0; }
+
+  /* metric cards */
+  .metrics { display: flex; gap: 12px; flex-wrap: wrap; margin: 14px 0; }
+  .metric-card {
+    flex: 1 1 160px;
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 18px;
+    text-align: center;
+  }
+  .metric-card .value { font-size: 22px; font-weight: 700; color: #3b82d4; }
+  .metric-card .label { font-size: 11px; color: #57606a; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* file tree */
+  .tree {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #1f2328;
+  }
+  .tree .dir  { color: #3b82d4; font-weight: 600; }
+  .tree .file { color: #1f2328; }
+  .tree .note { color: #57606a; font-size: 11px; }
+
+  /* table */
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 13px; }
+  th { background: #f7f8fa; border: 1px solid #e5e7eb; padding: 7px 12px; text-align: left; font-weight: 600; color: #1f2328; }
+  td { border: 1px solid #e5e7eb; padding: 7px 12px; color: #1f2328; }
+  tr:nth-child(even) td { background: #fafafa; }
+
+  /* code block */
+  pre {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: #1f2328;
+    margin: 8px 0 14px;
+  }
+
+  /* badges */
+  .badge {
+    display: inline-block;
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #57606a;
+    margin: 2px;
+  }
+  .badge.blue  { background: #eff6ff; border-color: #bfdbfe; color: #3b82d4; }
+  .badge.green { background: #f0fdf4; border-color: #bbf7d0; color: #16a34a; }
+
+  /* step list */
+  .steps { list-style: none; padding: 0; }
+  .steps li {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 10px; font-size: 13px;
+  }
+  .steps li .num {
+    min-width: 22px; height: 22px; border-radius: 50%;
+    background: #3b82d4; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* flow */
+  .flow {
+    display: flex; align-items: center; gap: 0;
+    flex-wrap: wrap; margin: 12px 0;
+  }
+  .flow-box {
+    background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px;
+    padding: 8px 14px; font-size: 12px; font-weight: 600; color: #1f2328;
+    text-align: center;
+  }
+  .flow-arrow { color: #57606a; font-size: 18px; padding: 0 6px; }
+
+  footer {
+    margin-top: 48px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: #57606a;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>🏠 House Price Prediction</h1>
+  <p class="subtitle">Project Report  ·  Python ML Project  ·  Linear Regression</p>
+
+  <hr />
+
+  
+  <h2>Overview</h2>
+  <p>
+    A full-stack machine learning application that predicts house prices from
+    <strong>area (sq ft)</strong> and <strong>number of rooms</strong>.
+    The project ships a <strong>Streamlit</strong> interactive frontend for data exploration
+    and prediction, plus a <strong>Flask REST API</strong> backend for programmatic access.
+  </p>
+
+  <div class="metrics">
+    <div class="metric-card"><div class="value">0.9980</div><div class="label">R² Score</div></div>
+    <div class="metric-card"><div class="value">$6,067</div><div class="label">MAE</div></div>
+    <div class="metric-card"><div class="value">$6,860</div><div class="label">RMSE</div></div>
+    <div class="metric-card"><div class="value">40</div><div class="label">Training Samples</div></div>
+  </div>
+
+  <hr />
+
+  
+  <h2>Architecture &amp; Data Flow</h2>
+
+  <div class="flow">
+    <div class="flow-box">house_price.csv<br /><small style="color:#57606a;font-weight:400">Dataset</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">train_model.py<br /><small style="color:#57606a;font-weight:400">Training</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">model.pkl<br /><small style="color:#57606a;font-weight:400">Saved Model</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">app.py / api.py<br /><small style="color:#57606a;font-weight:400">Frontend / API</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Prediction<br /><small style="color:#57606a;font-weight:400">Output</small></div>
+  </div>
+
+  <hr />
+
+  
+  <h2>Project Structure</h2>
+  <div class="tree">
+    <span class="dir">house_price_prediction/</span><br />
+      ├── <span class="file">app.py</span>        <span class="note">← Streamlit frontend (UI + EDA + prediction)</span><br />
+      ├── <span class="file">api.py</span>        <span class="note">← Flask REST API (/predict endpoint)</span><br />
+      ├── <span class="file">train_model.py</span>  <span class="note">← Trains model, saves model.pkl</span><br />
+      ├── <span class="file">model.pkl</span>      <span class="note">← Persisted trained model (auto-generated)</span><br />
+      ├── <span class="file">requirements.txt</span> <span class="note">← Python dependencies</span><br />
+      └── <span class="file">README.md</span>     <span class="note">← Run instructions</span><br />
+    <span class="file">house_price.csv</span>           <span class="note">← Dataset (parent directory)</span>
+  </div>
+
+  <hr />
+
+  
+  <h2>Tech Stack</h2>
+  <table>
+    <tr><th>Layer</th><th>Library</th><th>Purpose</th></tr>
+    <tr><td>ML Model</td><td><span class="badge blue">scikit-learn</span></td><td>Linear Regression training &amp; evaluation</td></tr>
+    <tr><td>Data</td><td><span class="badge">pandas</span> <span class="badge">numpy</span></td><td>Data loading, manipulation, metrics</td></tr>
+    <tr><td>Frontend</td><td><span class="badge blue">Streamlit</span></td><td>Interactive UI, widgets, tabs, metrics</td></tr>
+    <tr><td>Backend API</td><td><span class="badge blue">Flask</span></td><td>REST endpoint for programmatic predictions</td></tr>
+    <tr><td>Visualisation</td><td><span class="badge">matplotlib</span> <span class="badge">seaborn</span></td><td>EDA charts embedded in Streamlit</td></tr>
+    <tr><td>Model Save</td><td><span class="badge">joblib</span></td><td>Persist/load trained model</td></tr>
+  </table>
+
+  <hr />
+
+  
+  <h2>Model Details</h2>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Algorithm</td><td>Linear Regression</td></tr>
+    <tr><td>Features</td><td>area (sq ft), rooms (count)</td></tr>
+    <tr><td>Target</td><td>price (USD)</td></tr>
+    <tr><td>Train / Test Split</td><td>80% / 20%  (random_state=42)</td></tr>
+    <tr><td>R² Score</td><td>0.9980</td></tr>
+    <tr><td>MAE</td><td>$6,067</td></tr>
+    <tr><td>RMSE</td><td>$6,860</td></tr>
+    <tr><td>Coefficient — area</td><td>206.58 (per sq ft)</td></tr>
+    <tr><td>Coefficient — rooms</td><td>−4,628.76</td></tr>
+    <tr><td>Intercept</td><td>−32,604.97</td></tr>
+  </table>
+
+  <hr />
+
+  
+  <h2>Dataset</h2>
+  <table>
+    <tr><th>Column</th><th>Description</th><th>Range</th></tr>
+    <tr><td>area</td><td>Property size in square feet</td><td>700 – 4,200</td></tr>
+    <tr><td>rooms</td><td>Number of rooms</td><td>2 – 11</td></tr>
+    <tr><td>price</td><td>Sale price in USD</td><td>$110,000 – $810,000</td></tr>
+  </table>
+
+  <hr />
+
+  
+  <h2>Streamlit Frontend Features</h2>
+  <table>
+    <tr><th>Section</th><th>Content</th></tr>
+    <tr><td>Sidebar</td><td>Area &amp; Rooms inputs, Predict Price button</td></tr>
+    <tr><td>Prediction Banner</td><td>Predicted price with metric cards</td></tr>
+    <tr><td>Tab 1 — Dataset</td><td>Raw data table + statistical summary</td></tr>
+    <tr><td>Tab 2 — EDA</td><td>Scatter, boxplot, histogram, heatmap, regression line</td></tr>
+    <tr><td>Tab 3 — Model</td><td>MAE / RMSE / R², actual vs predicted, residuals, coefficients</td></tr>
+  </table>
+
+  <hr />
+
+  
+  <h2>Flask REST API</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+    <tr><td><span class="badge green">GET</span></td><td>/</td><td>Service info &amp; available endpoints</td></tr>
+    <tr><td><span class="badge green">GET</span></td><td>/health</td><td>Health check</td></tr>
+    <tr><td><span class="badge blue">POST</span></td><td>/predict</td><td>Predict price from area &amp; rooms (JSON body)</td></tr>
+  </table>
+
+  <h3>Example Request &amp; Response</h3>
+  <pre>POST /predict
+Content-Type: application/json
+
+{ "area": 1500, "rooms": 4 }
+
+→ { "area": 1500, "rooms": 4, "predicted_price": 258747.40 }</pre>
+
+  <hr />
+
+  
+  <h2>How to Run</h2>
+  <ul class="steps">
+    <li><div class="num">1</div><div><strong>Install dependencies</strong><br /><code>pip install -r house_price_prediction/requirements.txt</code></div></li>
+    <li><div class="num">2</div><div><strong>Train the model</strong><br /><code>python house_price_prediction/train_model.py</code></div></li>
+    <li><div class="num">3A</div><div><strong>Launch Streamlit frontend</strong><br /><code>streamlit run house_price_prediction/app.py</code> → http://localhost:8501</div></li>
+    <li><div class="num">3B</div><div><strong>Launch Flask API</strong><br /><code>python house_price_prediction/api.py</code> → http://127.0.0.1:5000</div></li>
+  </ul>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>
